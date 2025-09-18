@@ -602,7 +602,9 @@ export default function ContributionGuidelinesPage() {
                     className="w-full"
                     asChild
                   >
-                    <a href="mailto:contact@muhammadfiaz.com">Contact Support</a>
+                    <a href="mailto:contact@muhammadfiaz.com">
+                      Contact Support
+                    </a>
                   </Button>
                 </CardContent>
               </Card>

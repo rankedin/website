@@ -204,6 +204,42 @@ src/
 - Duplicate detection and data merging
 - Error handling for API rate limits
 
+## 🏆 GitHub Ranking Badges
+
+Show off your GitHub ranking with beautiful, dynamic badges in your README files! Our badges API generates SVG badges that display your current ranking position, total stars, and percentile.
+
+### Features
+
+- **Real-time Rankings** - Automatically updated based on total stars
+- **Multiple Styles** - Choose from default, flat, or plastic badge styles
+- **Cross-platform** - Works on GitHub, GitLab, and other platforms
+- **Fast Loading** - Cached for optimal performance
+- **Customizable** - Different styles to match your README theme
+
+### Quick Usage
+
+```markdown
+![GitHub Rank](https://yourdomain.com/api/badges?username=yourusername)
+```
+
+### Available Styles
+
+- **Default** (Modern Dark): `?style=default`
+- **Flat**: `?style=flat`
+- **Plastic**: `?style=plastic`
+
+### Badge Information
+
+Each badge displays:
+- **Rank**: Your current position (e.g., #42)
+- **Username**: Your GitHub username
+- **Stars**: Total stars across all repositories
+- **Percentile**: Top X% ranking
+
+### 📖 Detailed Documentation
+
+For complete setup instructions, examples, and troubleshooting, check out our comprehensive [GitHub Badges Guide](GITHUB_BADGE_README.md).
+
 ## 📈 SEO Features
 
 ### Metadata

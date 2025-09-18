@@ -105,25 +105,25 @@ export default function ApiDocumentationPage() {
   const codeExamples = {
     javascript: {
       users: `// Get top 50 users
-const response = await fetch('https://rankedin.dev/api/users?limit=50&page=1');
+const response = await fetch('${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/users?limit=50&page=1');
 const data = await response.json();
 
 console.log(data.users); // Array of user objects
 console.log(data.pagination); // Pagination info`,
       repos: `// Get repositories with filters
-const response = await fetch('https://rankedin.dev/api/repositories?language=javascript&limit=20');
+const response = await fetch('${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/repositories?language=javascript&limit=20');
 const data = await response.json();
 
 data.repositories.forEach(repo => {
   console.log(\`\${repo.name}: \${repo.stars} stars\`);
 });`,
       topics: `// Get trending topics
-const response = await fetch('https://rankedin.dev/api/topics?featured=true');
+const response = await fetch('${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/topics?featured=true');
 const data = await response.json();
 
 console.log(data.topics);`,
       contribute: `// Add a repository to ranking
-const response = await fetch('https://rankedin.dev/api/contribute', {
+const response = await fetch('${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/contribute', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -142,7 +142,7 @@ console.log(\`Added at rank #\${result.rank}\`);`,
       users: `import requests
 
 # Get top 50 users
-response = requests.get('https://rankedin.dev/api/users?limit=50&page=1')
+response = requests.get('${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/users?limit=50&page=1')
 data = response.json()
 
 print(f"Total users: {data['pagination']['total']}")
@@ -151,7 +151,7 @@ for user in data['users']:
       repos: `import requests
 
 # Get repositories with filters
-response = requests.get('https://rankedin.dev/api/repositories?language=python&limit=20')
+response = requests.get('${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/repositories?language=python&limit=20')
 data = response.json()
 
 for repo in data['repositories']:
@@ -159,7 +159,7 @@ for repo in data['repositories']:
       topics: `import requests
 
 # Get trending topics
-response = requests.get('https://rankedin.dev/api/topics?featured=true')
+response = requests.get('${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/topics?featured=true')
 data = response.json()
 
 for topic in data['topics']:
@@ -173,23 +173,23 @@ payload = {
     'reason': 'Creator of Linux and Git'
 }
 
-response = requests.post('https://rankedin.dev/api/contribute', json=payload)
+response = requests.post('${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/contribute', json=payload)
 result = response.json()
 
 print(f"Added at rank #{result['rank']}")`,
     },
     curl: {
       users: `# Get top 50 users
-curl -X GET "https://rankedin.dev/api/users?limit=50&page=1" \\
+curl -X GET "${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/users?limit=50&page=1" \\
      -H "Accept: application/json"`,
       repos: `# Get repositories with filters
-curl -X GET "https://rankedin.dev/api/repositories?language=javascript&limit=20" \\
+curl -X GET "${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/repositories?language=javascript&limit=20" \\
      -H "Accept: application/json"`,
       topics: `# Get trending topics
-curl -X GET "https://rankedin.dev/api/topics?featured=true" \\
+curl -X GET "${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/topics?featured=true" \\
      -H "Accept: application/json"`,
       contribute: `# Add a topic to ranking
-curl -X POST "https://rankedin.dev/api/contribute" \\
+curl -X POST "${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/contribute" \\
      -H "Content-Type: application/json" \\
      -d '{
        "type": "topic",
@@ -246,14 +246,19 @@ curl -X POST "https://rankedin.dev/api/contribute" \\
                   </h3>
                   <div className="relative">
                     <code className="block bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 p-3 rounded-lg text-sm">
-                      https://rankedin.dev/api
+                      {process.env.NEXT_PUBLIC_SITE_URL ||
+                        "https://rankedin.netlify.app"}
+                      /api
                     </code>
                     <Button
                       size="sm"
                       variant="ghost"
                       className="absolute right-2 top-2 h-6 w-6 p-0"
                       onClick={() =>
-                        copyToClipboard("https://rankedin.dev/api", "base-url")
+                        copyToClipboard(
+                          `${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api`,
+                          "base-url",
+                        )
                       }
                     >
                       {copiedCode === "base-url" ? (
@@ -630,7 +635,8 @@ curl -X POST "https://rankedin.dev/api/contribute" \\
                     <Key className="h-4 w-4" />
                     <AlertDescription>
                       Need higher rate limits? Contact us at{" "}
-                      <strong>contact@muhammadfiaz.com</strong> for enterprise access.
+                      <strong>contact@muhammadfiaz.com</strong> for enterprise
+                      access.
                     </AlertDescription>
                   </Alert>
                 </CardContent>

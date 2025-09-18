@@ -3,74 +3,36 @@
 import { motion } from "framer-motion"
 import { ExternalLink, GitFork, Star, TrendingUp } from "lucide-react"
 import Link from "next/link"
+import { useEffect } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useTrendingStore } from "@/store/trending"
 
 export function TrendingSection() {
-  const trendingUsers = [
-    {
-      username: "torvalds",
-      name: "Linus Torvalds",
-      avatar: "https://avatars.githubusercontent.com/u/1024025?v=4",
-      followers: "150K+",
-      totalStars: "45K+",
-      bio: "Creator of Linux and Git",
-    },
-    {
-      username: "gaearon",
-      name: "Dan Abramov",
-      avatar: "https://avatars.githubusercontent.com/u/810438?v=4",
-      followers: "120K+",
-      totalStars: "65K+",
-      bio: "React Core Team",
-    },
-    {
-      username: "sindresorhus",
-      name: "Sindre Sorhus",
-      avatar: "https://avatars.githubusercontent.com/u/170270?v=4",
-      followers: "95K+",
-      totalStars: "85K+",
-      bio: "Open Source Maintainer",
-    },
-  ]
+  const {
+    trendingUsers,
+    trendingRepos,
+    trendingTopics,
+    loading,
+    error,
+    fetchTrendingData,
+  } = useTrendingStore()
 
-  const trendingRepos = [
-    {
-      name: "microsoft/vscode",
-      description: "Visual Studio Code - Open Source IDE",
-      language: "TypeScript",
-      stars: "155K",
-      forks: "27K",
-      trend: "+2.3K this week",
-    },
-    {
-      name: "facebook/react",
-      description: "A declarative, efficient library for building UIs",
-      language: "JavaScript",
-      stars: "215K",
-      forks: "45K",
-      trend: "+1.8K this week",
-    },
-    {
-      name: "vercel/next.js",
-      description: "The React Framework for Production",
-      language: "JavaScript",
-      stars: "118K",
-      forks: "25K",
-      trend: "+1.5K this week",
-    },
-  ]
+  useEffect(() => {
+    fetchTrendingData()
+  }, [fetchTrendingData])
 
-  const trendingTopics = [
-    { name: "artificial-intelligence", repos: "45K+", trend: "+15%" },
-    { name: "machine-learning", repos: "38K+", trend: "+12%" },
-    { name: "blockchain", repos: "22K+", trend: "+8%" },
-    { name: "web3", repos: "18K+", trend: "+25%" },
-    { name: "typescript", repos: "35K+", trend: "+10%" },
-    { name: "rust", repos: "28K+", trend: "+18%" },
-  ]
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+      return `${(num / 1000000).toFixed(1)}M`
+    }
+    if (num >= 1000) {
+      return `${(num / 1000).toFixed(1)}K`
+    }
+    return num.toString()
+  }
 
   return (
     <section className="py-20 bg-gradient-to-b from-muted/30 to-background">
@@ -111,43 +73,74 @@ export function TrendingSection() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {trendingUsers.map((user, index) => (
-                  <motion.div
-                    key={user.username}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
-                  >
-                    <Avatar>
-                      <AvatarImage src={user.avatar} alt={user.name} />
-                      <AvatarFallback>
-                        {user.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold truncate">{user.name}</h4>
-                      <p className="text-sm text-muted-foreground truncate">
-                        @{user.username}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {user.bio}
-                      </p>
-                    </div>
-                    <div className="text-right text-xs">
-                      <div className="text-muted-foreground">
-                        {user.followers}
-                      </div>
-                      <div className="text-yellow-500">
-                        {user.totalStars} ⭐
+                {loading ? (
+                  // Loading skeleton for users
+                  <>
+                    <div className="flex items-center space-x-3 p-3 rounded-lg">
+                      <div className="h-10 w-10 bg-muted rounded-full animate-pulse"></div>
+                      <div className="flex-1 space-y-2">
+                        <div className="h-4 bg-muted rounded animate-pulse"></div>
+                        <div className="h-3 bg-muted rounded animate-pulse w-3/4"></div>
                       </div>
                     </div>
-                  </motion.div>
-                ))}
+                    <div className="flex items-center space-x-3 p-3 rounded-lg">
+                      <div className="h-10 w-10 bg-muted rounded-full animate-pulse"></div>
+                      <div className="flex-1 space-y-2">
+                        <div className="h-4 bg-muted rounded animate-pulse"></div>
+                        <div className="h-3 bg-muted rounded animate-pulse w-3/4"></div>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3 p-3 rounded-lg">
+                      <div className="h-10 w-10 bg-muted rounded-full animate-pulse"></div>
+                      <div className="flex-1 space-y-2">
+                        <div className="h-4 bg-muted rounded animate-pulse"></div>
+                        <div className="h-3 bg-muted rounded animate-pulse w-3/4"></div>
+                      </div>
+                    </div>
+                  </>
+                ) : error ? (
+                  <div className="text-center text-muted-foreground py-8">
+                    <p>Failed to load trending users</p>
+                  </div>
+                ) : (
+                  trendingUsers.map((user, index) => (
+                    <motion.div
+                      key={user.username}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
+                    >
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage src={user.avatarUrl} alt={user.name} />
+                        <AvatarFallback>
+                          {user.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold truncate">{user.name}</h4>
+                        <p className="text-sm text-muted-foreground truncate">
+                          @{user.username}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {user.bio || "GitHub Developer"}
+                        </p>
+                      </div>
+                      <div className="text-right text-xs">
+                        <div className="text-muted-foreground">
+                          {formatNumber(user.followers)} followers
+                        </div>
+                        <div className="text-yellow-500">
+                          {formatNumber(user.totalStars)} ⭐
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))
+                )}
                 <Link href="/users/ranking">
                   <Button variant="outline" className="w-full">
                     View All Users
@@ -173,41 +166,83 @@ export function TrendingSection() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {trendingRepos.map((repo, index) => (
-                  <motion.div
-                    key={repo.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border"
-                  >
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-semibold text-sm">{repo.name}</h4>
-                      <Badge variant="secondary" className="text-xs">
-                        {repo.language}
-                      </Badge>
+                {loading ? (
+                  // Loading skeleton for repositories
+                  <>
+                    <div className="p-3 rounded-lg border">
+                      <div className="space-y-2">
+                        <div className="h-4 bg-muted rounded animate-pulse"></div>
+                        <div className="h-3 bg-muted rounded animate-pulse w-3/4"></div>
+                        <div className="flex justify-between">
+                          <div className="h-3 bg-muted rounded animate-pulse w-1/4"></div>
+                          <div className="h-3 bg-muted rounded animate-pulse w-1/4"></div>
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
-                      {repo.description}
-                    </p>
-                    <div className="flex items-center justify-between text-xs">
-                      <div className="flex items-center space-x-3">
-                        <span className="flex items-center">
-                          <Star className="w-3 h-3 mr-1" />
-                          {repo.stars}
-                        </span>
-                        <span className="flex items-center">
-                          <GitFork className="w-3 h-3 mr-1" />
-                          {repo.forks}
+                    <div className="p-3 rounded-lg border">
+                      <div className="space-y-2">
+                        <div className="h-4 bg-muted rounded animate-pulse"></div>
+                        <div className="h-3 bg-muted rounded animate-pulse w-3/4"></div>
+                        <div className="flex justify-between">
+                          <div className="h-3 bg-muted rounded animate-pulse w-1/4"></div>
+                          <div className="h-3 bg-muted rounded animate-pulse w-1/4"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-3 rounded-lg border">
+                      <div className="space-y-2">
+                        <div className="h-4 bg-muted rounded animate-pulse"></div>
+                        <div className="h-3 bg-muted rounded animate-pulse w-3/4"></div>
+                        <div className="flex justify-between">
+                          <div className="h-3 bg-muted rounded animate-pulse w-1/4"></div>
+                          <div className="h-3 bg-muted rounded animate-pulse w-1/4"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : error ? (
+                  <div className="text-center text-muted-foreground py-8">
+                    <p>Failed to load trending repositories</p>
+                  </div>
+                ) : (
+                  trendingRepos.map((repo, index) => (
+                    <motion.div
+                      key={repo.fullName}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border"
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <h4 className="font-semibold text-sm">
+                          {repo.fullName}
+                        </h4>
+                        <Badge variant="secondary" className="text-xs">
+                          {repo.language || "Unknown"}
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
+                        {repo.description || "No description available"}
+                      </p>
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="flex items-center space-x-3">
+                          <span className="flex items-center">
+                            <Star className="w-3 h-3 mr-1" />
+                            {formatNumber(repo.stars)}
+                          </span>
+                          <span className="flex items-center">
+                            <GitFork className="w-3 h-3 mr-1" />
+                            {formatNumber(repo.forks)}
+                          </span>
+                        </div>
+                        <span className="text-green-600 font-medium">
+                          Trending
                         </span>
                       </div>
-                      <span className="text-green-600 font-medium">
-                        {repo.trend}
-                      </span>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  ))
+                )}
                 <Link href="/repos/ranking">
                   <Button variant="outline" className="w-full">
                     View All Repositories
@@ -233,26 +268,60 @@ export function TrendingSection() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {trendingTopics.map((topic, index) => (
-                  <motion.div
-                    key={topic.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
-                  >
-                    <div>
-                      <h4 className="font-medium text-sm">#{topic.name}</h4>
-                      <p className="text-xs text-muted-foreground">
-                        {topic.repos} repos
-                      </p>
+                {loading ? (
+                  // Loading skeleton for topics
+                  <>
+                    <div className="flex items-center justify-between p-3 rounded-lg">
+                      <div className="space-y-1">
+                        <div className="h-4 bg-muted rounded animate-pulse w-32"></div>
+                        <div className="h-3 bg-muted rounded animate-pulse w-20"></div>
+                      </div>
+                      <div className="h-6 bg-muted rounded animate-pulse w-16"></div>
                     </div>
-                    <Badge variant="outline" className="text-xs text-green-600">
-                      {topic.trend}
-                    </Badge>
-                  </motion.div>
-                ))}
+                    <div className="flex items-center justify-between p-3 rounded-lg">
+                      <div className="space-y-1">
+                        <div className="h-4 bg-muted rounded animate-pulse w-28"></div>
+                        <div className="h-3 bg-muted rounded animate-pulse w-24"></div>
+                      </div>
+                      <div className="h-6 bg-muted rounded animate-pulse w-16"></div>
+                    </div>
+                    <div className="flex items-center justify-between p-3 rounded-lg">
+                      <div className="space-y-1">
+                        <div className="h-4 bg-muted rounded animate-pulse w-36"></div>
+                        <div className="h-3 bg-muted rounded animate-pulse w-18"></div>
+                      </div>
+                      <div className="h-6 bg-muted rounded animate-pulse w-16"></div>
+                    </div>
+                  </>
+                ) : error ? (
+                  <div className="text-center text-muted-foreground py-8">
+                    <p>Failed to load trending topics</p>
+                  </div>
+                ) : (
+                  trendingTopics.map((topic, index) => (
+                    <motion.div
+                      key={topic.name}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
+                    >
+                      <div>
+                        <h4 className="font-medium text-sm">#{topic.name}</h4>
+                        <p className="text-xs text-muted-foreground">
+                          {formatNumber(topic.repositoryCount)} repos
+                        </p>
+                      </div>
+                      <Badge
+                        variant="outline"
+                        className="text-xs text-green-600"
+                      >
+                        Score: {topic.score}
+                      </Badge>
+                    </motion.div>
+                  ))
+                )}
                 <Link href="/topics/ranking">
                   <Button variant="outline" className="w-full">
                     View All Topics

@@ -2,6 +2,3 @@
   command = "npm run build"
   publish = ".next"
 
-# Note: @netlify/plugin-nextjs removed temporarily to avoid a post-build publishing error
-# If you rely on plugin features (Edge functions, image handling), re-add the plugin after
-# resolving the publishing issue or deploy via Netlify's standard build pipeline.

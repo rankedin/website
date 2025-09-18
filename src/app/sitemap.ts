@@ -1,8 +1,7 @@
 import type { MetadataRoute } from "next"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl =
-    process.env.PUBLIC_SITE_URL || "https://rankedin.netlify.app"
+  const baseUrl = process.env.PUBLIC_SITE_URL || "https://rankedin.netlify.app"
 
   return [
     {

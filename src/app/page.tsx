@@ -7,7 +7,6 @@ import { FAQSection } from "@/components/faq-section"
 import { FeaturesSection } from "@/components/features-section"
 import { HeroSection } from "@/components/hero-section"
 import { NewsletterSection } from "@/components/newsletter-section"
-import { PartnersSection } from "@/components/partners-section"
 import { StatsSection } from "@/components/stats-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { TrendingSection } from "@/components/trending-section"
@@ -21,7 +20,6 @@ export default function Home() {
       <FeaturesSection />
       <TrendingSection />
       <TestimonialsSection />
-      <PartnersSection />
       <CommunitySection />
       <FAQSection />
       <NewsletterSection />

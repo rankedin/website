@@ -12,7 +12,7 @@ datasource db {
 
 model User {
   id        String   @id @default(cuid())
-  username  String   @unique
+  username  String   @unique(map: "users_username_unique")
   name      String?
   avatarUrl String?
   bio       String?
@@ -25,14 +25,18 @@ model User {
   totalStars  Int    @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
+  @@unique([username], map: "users_username_composite_unique")
+  @@index([totalStars])
+  @@index([followers])
+  @@index([createdAt])
   @@map("users")
 }
 
 model Repository {
   id          String   @id @default(cuid())
   name        String
-  fullName    String   @unique
+  fullName    String   @unique(map: "repositories_fullName_unique")
   owner       String
   description String?
   language    String?
@@ -42,16 +46,24 @@ model Repository {
   openIssues  Int      @default(0)
   size        Int      @default(0)
   isPrivate   Boolean  @default(false)
-  htmlUrl     String
+  htmlUrl     String   @unique(map: "repositories_htmlUrl_unique")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  
+
+  @@unique([name, owner], map: "repositories_name_owner_unique")
+  @@unique([fullName], map: "repositories_fullName_composite_unique")
+  @@unique([htmlUrl], map: "repositories_htmlUrl_composite_unique")
+  @@index([stars])
+  @@index([forks])
+  @@index([language])
+  @@index([owner])
+  @@index([createdAt])
   @@map("repositories")
 }
 
 model Topic {
   id          String   @id @default(cuid())
-  name        String   @unique
+  name        String   @unique(map: "topics_name_unique")
   displayName String?
   description String?
   featured    Boolean  @default(false)
@@ -60,6 +72,11 @@ model Topic {
   repositories Int     @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  
+
+  @@unique([name], map: "topics_name_composite_unique")
+  @@index([score])
+  @@index([featured])
+  @@index([repositories])
+  @@index([createdAt])
   @@map("topics")
 }

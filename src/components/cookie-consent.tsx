@@ -220,37 +220,45 @@ export function CookieConsentBanner() {
       onDecline={handleRejectAll}
       cookieName="rankedin-cookie-consent"
       style={{
-        background: "hsl(var(--background))",
-        border: "1px solid hsl(var(--border))",
+        background: "#000000",
+        border: "1px solid #333333",
         borderRadius: "8px",
         margin: "16px",
-        padding: "16px",
+        padding: "12px",
         fontSize: "14px",
-        color: "hsl(var(--foreground))",
+        color: "#ffffff",
         boxShadow:
-          "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+          "0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3)",
         backdropFilter: "blur(8px)",
         zIndex: 9999,
+        maxWidth: "1000px",
+        width: "calc(100vw - 32px)",
+        left: "50%",
+        transform: "translateX(-50%)",
+        position: "fixed",
+        bottom: "16px",
       }}
       buttonStyle={{
-        background: "hsl(var(--primary))",
-        color: "hsl(var(--primary-foreground))",
+        background: "#ffffff",
+        color: "#000000",
         fontSize: "14px",
         padding: "8px 16px",
         borderRadius: "6px",
         border: "none",
         cursor: "pointer",
         marginRight: "8px",
+        fontWeight: "500",
       }}
       declineButtonStyle={{
         background: "transparent",
-        color: "hsl(var(--foreground))",
+        color: "#ffffff",
         fontSize: "14px",
         padding: "8px 16px",
         borderRadius: "6px",
-        border: "1px solid hsl(var(--border))",
+        border: "1px solid #666666",
         cursor: "pointer",
         marginRight: "8px",
+        fontWeight: "500",
       }}
       expires={365}
     >
@@ -259,7 +267,7 @@ export function CookieConsentBanner() {
           <Cookie className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
           <div>
             <h3 className="font-semibold mb-1">We use cookies</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm" style={{ color: "#cccccc" }}>
               We use cookies to enhance your browsing experience, analyze site
               traffic, and personalize content. By clicking "Accept All", you
               consent to our use of cookies.

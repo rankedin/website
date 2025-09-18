@@ -38,34 +38,36 @@ export function CommunitySection() {
     },
   ]
 
+  // Real community links and external destinations provided by project owner
   const communityLinks = [
     {
       title: "GitHub Discussions",
       description:
         "Join conversations about rankings, features, and development",
       icon: <Github className="h-8 w-8" />,
-      link: "#",
+      // Assumed project discussions URL under the repo; adjust if different
+      link: "https://github.com/rankedin/website/discussions",
       color: "bg-gray-900 text-white",
     },
     {
-      title: "Twitter Community",
+      title: "Twitter",
       description: "Follow for updates, tips, and trending discoveries",
       icon: <Twitter className="h-8 w-8" />,
-      link: "#",
+      link: "https://twitter.com/muhammadfiaz_",
       color: "bg-blue-500 text-white",
     },
     {
       title: "Discord Server",
       description: "Real-time chat with developers and maintainers",
       icon: <MessageCircle className="h-8 w-8" />,
-      link: "#",
+      link: "https://discord.gg/zvqm4VZ3Pk",
       color: "bg-indigo-600 text-white",
     },
     {
-      title: "Buy us a Coffee",
+      title: "Buy me a Coffee",
       description: "Support the development of RankedIn",
       icon: <Coffee className="h-8 w-8" />,
-      link: "#",
+      link: "https://pay.muhammadfiaz.com",
       color: "bg-yellow-500 text-white",
     },
   ]
@@ -138,7 +140,7 @@ export function CommunitySection() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <Link href={link.link}>
+              <a href={link.link} target="_blank" rel="noreferrer">
                 <Card className="group cursor-pointer hover:shadow-lg transition-all duration-300 h-full">
                   <CardContent className="p-6">
                     <div className="flex items-start space-x-4">
@@ -158,7 +160,7 @@ export function CommunitySection() {
                     </div>
                   </CardContent>
                 </Card>
-              </Link>
+              </a>
             </motion.div>
           ))}
         </motion.div>
@@ -188,9 +190,15 @@ export function CommunitySection() {
                     <Heart className="ml-2 h-4 w-4 group-hover:scale-110 transition-transform" />
                   </Button>
                 </Link>
-                <Button variant="outline" size="lg">
-                  Join Discord
-                </Button>
+                <a
+                  href="https://discord.gg/zvqm4VZ3Pk"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  <Button variant="outline" size="lg">
+                    Join Discord
+                  </Button>
+                </a>
               </div>
             </CardContent>
           </Card>

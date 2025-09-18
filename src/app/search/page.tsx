@@ -252,7 +252,7 @@ export default function SearchPage() {
                       <CardContent className="p-6">
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                           <div className="flex items-center space-x-4">
-                            <Avatar className="h-12 w-12">
+                            <Avatar className="h-10 w-10">
                               <AvatarImage
                                 src={user.avatar_url}
                                 alt={user.login}

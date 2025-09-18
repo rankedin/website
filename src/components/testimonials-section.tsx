@@ -12,7 +12,8 @@ export function TestimonialsSection() {
       name: "Sarah Chen",
       role: "Senior Frontend Developer",
       company: "Tech Corp",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=60&h=60&fit=crop&crop=face",
+      avatar:
+        "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=60&h=60&fit=crop&crop=face",
       content:
         "RankedIn has completely transformed how I discover new projects and talented developers. The ranking system is incredibly accurate and helps me stay on top of emerging trends.",
       rating: 5,
@@ -22,7 +23,8 @@ export function TestimonialsSection() {
       name: "Marcus Rodriguez",
       role: "Open Source Maintainer",
       company: "GitHub",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face",
+      avatar:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face",
       content:
         "As someone who maintains several popular repositories, I love how RankedIn showcases projects based on real engagement metrics. It's helped our project gain incredible visibility.",
       rating: 5,
@@ -32,7 +34,8 @@ export function TestimonialsSection() {
       name: "Alex Thompson",
       role: "CTO",
       company: "StartupXYZ",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop&crop=face",
+      avatar:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop&crop=face",
       content:
         "We use RankedIn to scout talent for our team. The detailed rankings and metrics make it easy to identify top performers in specific technologies.",
       rating: 5,
@@ -42,7 +45,8 @@ export function TestimonialsSection() {
       name: "Priya Patel",
       role: "Full Stack Developer",
       company: "DevAgency",
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&crop=face",
+      avatar:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&crop=face",
       content:
         "The community-driven approach of RankedIn means I always discover authentic, high-quality projects. It's become my go-to platform for finding inspiration.",
       rating: 5,
@@ -52,7 +56,8 @@ export function TestimonialsSection() {
       name: "David Kim",
       role: "ML Engineer",
       company: "AI Solutions",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&crop=face",
+      avatar:
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&crop=face",
       content:
         "Love how RankedIn tracks trending topics in AI and machine learning. It helps me stay current with the latest developments in my field.",
       rating: 5,
@@ -62,7 +67,8 @@ export function TestimonialsSection() {
       name: "Emma Wilson",
       role: "DevOps Engineer",
       company: "CloudFirst",
-      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&h=60&fit=crop&crop=face",
+      avatar:
+        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&h=60&fit=crop&crop=face",
       content:
         "The real-time rankings and comprehensive metrics make RankedIn invaluable for discovering tools and libraries for our infrastructure stack.",
       rating: 5,

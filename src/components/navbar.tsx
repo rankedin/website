@@ -1,7 +1,7 @@
 "use client"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { BarChart3, Github, Menu, Plus, X } from "lucide-react"
+import { Github, Menu, Plus, X } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -38,8 +38,8 @@ export function Navbar() {
               whileTap={{ scale: 0.95 }}
               className="flex items-center space-x-2"
             >
-              <BarChart3 className="h-6 w-6 text-primary" />
               <span className="font-bold text-xl">RankedIn</span>
+              <Github className="h-5 w-5 text-primary" />
             </motion.div>
           </Link>
 

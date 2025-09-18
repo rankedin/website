@@ -49,6 +49,11 @@ export const metadata: Metadata = {
       return new URL("https://rankedin.netlify.app")
     }
   })(),
+  icons: {
+    icon: "/favicon.webp",
+    shortcut: "/favicon.webp",
+    apple: "/favicon.webp",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -59,7 +64,7 @@ export const metadata: Metadata = {
       "Discover and rank the best GitHub users, repositories, and topics.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/favicon.webp",
         width: 1200,
         height: 630,
         alt: "RankedIn - GitHub Rankings",
@@ -71,7 +76,7 @@ export const metadata: Metadata = {
     title: "RankedIn - GitHub Rankings",
     description:
       "Discover and rank the best GitHub users, repositories, and topics.",
-    images: ["/og-image.png"],
+    images: ["/favicon.webp"],
   },
   robots: {
     index: true,

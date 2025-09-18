@@ -1,7 +1,9 @@
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  env: {
+    PUBLIC_SITE_URL: process.env.PUBLIC_SITE_URL || 'https://rankedin.netlify.app',
+  },
 }
 
 export default nextConfig

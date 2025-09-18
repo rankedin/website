@@ -34,7 +34,21 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "RankedIn Team" }],
   creator: "RankedIn",
-  metadataBase: new URL(process.env.PUBLIC_SITE_URL || "http://localhost:3000"),
+  // Ensure the PUBLIC_SITE_URL environment variable is a valid absolute URL.
+  // Some CI/build environments mask or obfuscate env vars which can produce
+  // invalid inputs like '****************.app'. Normalize by falling back to
+  // a safe default and ensuring a scheme is present before calling `new URL`.
+  metadataBase: (() => {
+    const raw = process.env.PUBLIC_SITE_URL || "https://rankedin.netlify.app"
+    // If the raw value doesn't start with http:// or https://, prepend https://
+    const withScheme = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`
+    try {
+      return new URL(withScheme)
+    } catch (_) {
+      // As a last resort use the known good default
+      return new URL("https://rankedin.netlify.app")
+    }
+  })(),
   openGraph: {
     type: "website",
     locale: "en_US",

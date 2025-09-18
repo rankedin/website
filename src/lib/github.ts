@@ -1,7 +1,7 @@
 import { Octokit } from "@octokit/rest"
 
 export const github = new Octokit({
-  auth: process.env.PUBLIC_GITHUB_TOKEN,
+  auth: process.env.GITHUB_TOKEN,
 })
 
 export interface GitHubUser {

@@ -210,21 +210,37 @@ export function BentoGridSection() {
       ),
       link: "/api-docs",
     },
-    // Achievements (static)
+    // Achievements (dynamic)
     {
       id: 8,
       title: "Achievements",
       description: "Celebrate your milestones",
       icon: <Award className="h-5 w-5" />,
-      stats: "Coming Soon",
+      stats: stats ? `${stats.badgeRequests.value} Served` : "Loading...",
       gradient: "from-amber-500/20 to-yellow-500/20",
       size: "sm",
-      content: (
+      content: stats ? (
+        <div className="space-y-2">
+          <div className="flex items-center justify-center">
+            <div className="text-center">
+              <div className="text-lg font-bold text-amber-500">🏆</div>
+              <p className="text-xs text-muted-foreground mt-1">
+                Badges Generated
+              </p>
+            </div>
+          </div>
+          <div className="text-center">
+            <Badge variant="secondary" className="text-xs">
+              {stats.badgeRequests.value} total
+            </Badge>
+          </div>
+        </div>
+      ) : (
         <div className="flex items-center justify-center h-12">
           <Skeleton className="w-8 h-8 rounded-full" />
         </div>
       ),
-      link: "#",
+      link: "/api-docs#badges",
     },
     // Explore Rankings (static)
     {

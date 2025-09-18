@@ -4,23 +4,29 @@ import { prisma } from "@/lib/prisma"
 export async function GET() {
   try {
     // Get all the statistics in parallel for better performance
-    const [userCount, repoCount, totalStars, topicCount] = await Promise.all([
-      // Count total users
-      prisma.user.count(),
+    const [userCount, repoCount, totalStars, topicCount, globalStats] =
+      await Promise.all([
+        // Count total users
+        prisma.user.count(),
 
-      // Count total repositories
-      prisma.repository.count(),
+        // Count total repositories
+        prisma.repository.count(),
 
-      // Sum all stars from repositories
-      prisma.repository.aggregate({
-        _sum: {
-          stars: true,
-        },
-      }),
+        // Sum all stars from repositories
+        prisma.repository.aggregate({
+          _sum: {
+            stars: true,
+          },
+        }),
 
-      // Count total topics
-      prisma.topic.count(),
-    ])
+        // Count total topics
+        prisma.topic.count(),
+
+        // Get global stats (badge requests, etc.)
+        prisma.globalStats.findUnique({
+          where: { id: "global" },
+        }),
+      ])
 
     // Format the numbers nicely
     const formatNumber = (num: number): string => {
@@ -56,6 +62,13 @@ export async function GET() {
         value: topicCount > 0 ? formatNumber(topicCount) : "0",
         raw: topicCount,
         description: "Trending technologies tracked",
+      },
+      badgeRequests: {
+        value: globalStats?.totalBadgeRequests
+          ? formatNumber(globalStats.totalBadgeRequests)
+          : "0",
+        raw: globalStats?.totalBadgeRequests || 0,
+        description: "Total badge requests served",
       },
     }
 

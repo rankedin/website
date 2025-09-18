@@ -70,7 +70,7 @@ export function HeroSection() {
   }
 
   return (
-    <section className="relative min-h-[80vh] flex items-center justify-center px-4 py-16 overflow-hidden">
+    <section className="relative min-h-[90vh] flex items-center justify-center px-4 py-20">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5" />
       <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px] dark:bg-grid-white/[0.02]" />
@@ -85,7 +85,7 @@ export function HeroSection() {
           {/* Hero Title */}
           <div className="space-y-4">
             <motion.h1
-              className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+              className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-tight pb-4"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: "easeOut" }}

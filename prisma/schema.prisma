@@ -80,3 +80,15 @@ model Topic {
   @@index([createdAt])
   @@map("topics")
 }
+
+model GlobalStats {
+  id             String   @id @default(cuid())
+  totalBadgeRequests Int      @default(0)
+  totalUsers     Int      @default(0)
+  totalRepos     Int      @default(0)
+  totalTopics    Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("global_stats")
+}

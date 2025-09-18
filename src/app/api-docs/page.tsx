@@ -100,6 +100,15 @@ export default function ApiDocumentationPage() {
       icon: BarChart3,
       color: "orange",
     },
+    {
+      id: "badges",
+      method: "GET",
+      path: "/api/badges",
+      title: "Get Ranking Badges",
+      description: "Generate SVG badges for GitHub README files",
+      icon: Shield,
+      color: "pink",
+    },
   ]
 
   const codeExamples = {
@@ -137,6 +146,15 @@ const response = await fetch('${process.env.NEXT_PUBLIC_SITE_URL || "https://ran
 
 const result = await response.json();
 console.log(\`Added at rank #\${result.rank}\`);`,
+      badges: `// Get user ranking badge (SVG)
+const response = await fetch('${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/badges?username=yourusername');
+const svgBadge = await response.text();
+
+// Get user ranking data (JSON)
+const jsonResponse = await fetch('${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/badges?username=yourusername&format=json');
+const userData = await jsonResponse.json();
+
+console.log(\`Rank: #\${userData.rank}, Stars: \${userData.totalStars}\`);`,
     },
     python: {
       users: `import requests
@@ -177,6 +195,21 @@ response = requests.post('${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedi
 result = response.json()
 
 print(f"Added at rank #{result['rank']}")`,
+      badges: `import requests
+
+# Get user ranking data (JSON)
+response = requests.get('${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/badges?username=yourusername&format=json')
+user_data = response.json()
+
+print(f"Username: {user_data['username']}")
+print(f"Rank: #{user_data['rank']}")
+print(f"Total Stars: {user_data['totalStars']}")
+print(f"Percentile: Top {user_data['percentile']}%")
+
+# Get SVG badge
+svg_response = requests.get('${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/badges?username=yourusername')
+with open('badge.svg', 'wb') as f:
+    f.write(svg_response.content)`,
     },
     curl: {
       users: `# Get top 50 users
@@ -196,6 +229,13 @@ curl -X POST "${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.ap
        "url": "https://github.com/topics/artificial-intelligence",
        "reason": "Growing AI community"
      }'`,
+      badges: `# Get user ranking badge (SVG)
+curl -X GET "${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/badges?username=yourusername" \\
+     -H "Accept: image/svg+xml"
+
+# Get user ranking data (JSON)
+curl -X GET "${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.app"}/api/badges?username=yourusername&format=json" \\
+     -H "Accept: application/json"`,
     },
   }
 
@@ -516,6 +556,24 @@ curl -X POST "${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.ap
     "score": 98.5
   }
 }`}
+                            {endpoint.id === "badges" &&
+                              `// JSON Response
+{
+  "username": "yourusername",
+  "name": "Your Name",
+  "rank": 42,
+  "totalUsers": 10000,
+  "percentile": 96,
+  "totalStars": 1250,
+  "followers": 150,
+  "publicRepos": 25,
+  "location": "San Francisco",
+  "company": "Your Company",
+  "lastUpdated": "2024-01-15T10:30:00Z"
+}
+
+// SVG Response (when format=svg or Accept: image/svg+xml)
+// Returns SVG badge image for GitHub README`}
                           </code>
                         </pre>
                       </div>
@@ -524,7 +582,8 @@ curl -X POST "${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.ap
                     {/* Parameters */}
                     {(endpoint.id === "users" ||
                       endpoint.id === "repos" ||
-                      endpoint.id === "topics") && (
+                      endpoint.id === "topics" ||
+                      endpoint.id === "badges") && (
                       <div className="mt-6">
                         <h4 className="font-semibold mb-3 flex items-center space-x-2">
                           <Settings className="h-4 w-4" />
@@ -537,37 +596,77 @@ curl -X POST "${process.env.NEXT_PUBLIC_SITE_URL || "https://rankedin.netlify.ap
                             <div className="font-medium">Description</div>
                           </div>
                           <Separator />
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                            <code>page</code>
-                            <span className="text-muted-foreground">
-                              integer
-                            </span>
-                            <span>Page number (default: 1)</span>
-                          </div>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                            <code>limit</code>
-                            <span className="text-muted-foreground">
-                              integer
-                            </span>
-                            <span>Items per page (max: 100)</span>
-                          </div>
-                          {endpoint.id === "repos" && (
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                              <code>language</code>
-                              <span className="text-muted-foreground">
-                                string
-                              </span>
-                              <span>Filter by programming language</span>
-                            </div>
-                          )}
-                          {endpoint.id === "topics" && (
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                              <code>featured</code>
-                              <span className="text-muted-foreground">
-                                boolean
-                              </span>
-                              <span>Show only featured topics</span>
-                            </div>
+                          {endpoint.id === "badges" ? (
+                            <>
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                <code>username</code>
+                                <span className="text-muted-foreground">
+                                  string
+                                </span>
+                                <span>GitHub username (required)</span>
+                              </div>
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                <code>name</code>
+                                <span className="text-muted-foreground">
+                                  string
+                                </span>
+                                <span>Alternative to username parameter</span>
+                              </div>
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                <code>format</code>
+                                <span className="text-muted-foreground">
+                                  string
+                                </span>
+                                <span>
+                                  Response format: 'json' or 'svg' (default:
+                                  json)
+                                </span>
+                              </div>
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                <code>style</code>
+                                <span className="text-muted-foreground">
+                                  string
+                                </span>
+                                <span>
+                                  Badge style: 'default', 'flat', or 'plastic'
+                                </span>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                <code>page</code>
+                                <span className="text-muted-foreground">
+                                  integer
+                                </span>
+                                <span>Page number (default: 1)</span>
+                              </div>
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                <code>limit</code>
+                                <span className="text-muted-foreground">
+                                  integer
+                                </span>
+                                <span>Items per page (max: 100)</span>
+                              </div>
+                              {endpoint.id === "repos" && (
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                  <code>language</code>
+                                  <span className="text-muted-foreground">
+                                    string
+                                  </span>
+                                  <span>Filter by programming language</span>
+                                </div>
+                              )}
+                              {endpoint.id === "topics" && (
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                  <code>featured</code>
+                                  <span className="text-muted-foreground">
+                                    boolean
+                                  </span>
+                                  <span>Show only featured topics</span>
+                                </div>
+                              )}
+                            </>
                           )}
                         </div>
                       </div>

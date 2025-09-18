@@ -47,6 +47,19 @@ export async function GET(request: NextRequest) {
       )
     }
 
+    // Track global badge request
+    await prisma.globalStats.upsert({
+      where: { id: "global" }, // Use a fixed ID for the single global stats record
+      update: { totalBadgeRequests: { increment: 1 } },
+      create: {
+        id: "global",
+        totalBadgeRequests: 1,
+        totalUsers: await prisma.user.count(),
+        totalRepos: await prisma.repository.count(),
+        totalTopics: await prisma.topic.count(),
+      },
+    })
+
     // Calculate user's ranking
     const ranking = await prisma.user.count({
       where: {

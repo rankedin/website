@@ -21,6 +21,11 @@ interface StatsData {
     raw: number
     description: string
   }
+  badgeRequests: {
+    value: string
+    raw: number
+    description: string
+  }
 }
 
 interface StatsState {

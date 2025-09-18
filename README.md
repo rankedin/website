@@ -1,36 +1,272 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RankedIn - GitHub Rankings Platform
 
-## Getting Started
+[![Sponsor](https://img.shields.io/badge/Sponsor-pay.muhammadfiaz.com-blue?style=for-the-badge&logo=github)](https://pay.muhammadfiaz.com)
 
-First, run the development server:
+A comprehensive full-stack SaaS website for discovering and ranking GitHub users, repositories, and topics. Built with modern web technologies and designed for optimal performance and user experience.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Features
+
+### Core Functionality
+
+- **GitHub Rankings**: Comprehensive ranking system for users, repositories, and topics
+- **Search & Discovery**: Advanced search capabilities with real-time GitHub API integration
+- **Contribution System**: Easy-to-use interface for adding GitHub entities to rankings
+- **Responsive Design**: Fully responsive across all device sizes
+
+### Technical Features
+
+- **Dark/Light Theme**: System-aware theme toggle with persistent storage
+- **Real-time Data**: Live GitHub API integration with caching
+- **SEO Optimized**: Dynamic metadata, sitemap, and Open Graph support
+- **Performance**: Skeleton loading states and optimized animations
+- **Error Handling**: Comprehensive error boundaries and user feedback
+
+## 🛠️ Technology Stack
+
+### Frontend
+
+- **Next.js 15.5.3** - App Router with TypeScript
+- **Tailwind CSS v4** - Utility-first styling
+- **Shadcn/UI** - Component library
+- **Framer Motion** - Smooth animations
+- **Zustand** - State management
+
+### Backend
+
+- **Prisma ORM** - Database modeling and queries
+- **Xata** - PostgreSQL cloud database
+- **GitHub Octokit** - GitHub API integration
+- **Sonner** - Toast notifications
+
+### Development
+
+- **TypeScript** - Type safety
+- **ESLint** - Code linting
+- **Turbopack** - Fast bundling
+
+## 📁 Project Structure
+
+```
+src/
+├── app/
+│   ├── api/                 # API routes
+│   │   ├── search/         # GitHub search endpoint
+│   │   ├── users/          # User management
+│   │   ├── repositories/   # Repository management
+│   │   └── topics/         # Topic management
+│   ├── users/ranking/      # User rankings page
+│   ├── repos/ranking/      # Repository rankings page
+│   ├── topics/ranking/     # Topic rankings page
+│   ├── search/             # Search results page
+│   ├── contribute/         # Contribution page
+│   ├── layout.tsx          # Root layout
+│   ├── page.tsx            # Homepage
+│   ├── error.tsx           # Error boundary
+│   ├── loading.tsx         # Loading page
+│   ├── not-found.tsx       # 404 page
+│   ├── sitemap.ts          # SEO sitemap
+│   └── robots.ts           # SEO robots.txt
+├── components/
+│   ├── ui/                 # Shadcn components
+│   ├── hero-section.tsx    # Homepage hero
+│   ├── navbar.tsx          # Navigation
+│   ├── footer.tsx          # Footer
+│   ├── theme-provider.tsx  # Theme context
+│   ├── theme-toggle.tsx    # Theme switcher
+│   └── skeletons.tsx       # Loading skeletons
+├── lib/
+│   ├── prisma.ts           # Database client
+│   ├── github.ts           # GitHub API client
+│   └── utils.ts            # Utilities
+├── hooks/
+│   └── use-mobile.ts       # Mobile detection
+└── store/
+    └── theme.ts            # Theme state
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚦 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js 18+
+- npm or yarn
+- GitHub Personal Access Token
+- Xata account and database
 
-## Learn More
+### Installation
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone the repository**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   git clone <repository-url>
+   cd rank
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Install dependencies**
 
-## Deploy on Vercel
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Environment setup**
+   Create a `.env` file in the root directory:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```env
+   # Database
+   DATABASE_URL="your-xata-database-url"
+
+   # GitHub API
+   GITHUB_TOKEN="your-github-personal-access-token"
+
+   # Site URL (for production)
+   NEXT_PUBLIC_BASE_URL="https://your-domain.com"
+   ```
+
+4. **Database setup**
+
+   ```bash
+   npx prisma db push
+   ```
+
+5. **Start development server**
+
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📊 Database Schema
+
+### User Model
+
+- Basic profile information (username, name, bio, location, company)
+- Ranking metrics (followers, following, public repos, total stars)
+- GitHub metadata (ID, avatar URL, blog)
+
+### Repository Model
+
+- Repository details (name, description, language, topics)
+- Ranking metrics (stars, forks, watchers, size)
+- Owner information and GitHub metadata
+
+### Topic Model
+
+- Topic information (name, display name, description)
+- Ranking metrics (score, repository count)
+- GitHub metadata and timestamps
+
+## 🎯 Key Pages
+
+### Rankings
+
+- **User Rankings** (`/users/ranking`) - Top GitHub users by followers and contributions
+- **Repository Rankings** (`/repos/ranking`) - Most starred and trending repositories
+- **Topic Rankings** (`/topics/ranking`) - Popular programming topics and technologies
+
+### Discovery
+
+- **Search** (`/search`) - Real-time GitHub search with add-to-ranking functionality
+- **Contribute** (`/contribute`) - Bulk addition of GitHub entities via URLs or names
+
+## 🎨 Design System
+
+### Theme Support
+
+- Light and dark themes with system preference detection
+- Persistent theme selection using Zustand
+- Smooth transitions between themes
+
+### Components
+
+- Consistent design language using Shadcn/UI
+- Accessibility-first component design
+- Responsive breakpoints for all screen sizes
+
+### Animations
+
+- Smooth page transitions with Framer Motion
+- Skeleton loading states for better UX
+- Micro-interactions for enhanced engagement
+
+## 🔧 API Endpoints
+
+### GitHub Integration
+
+- `GET /api/search` - Search GitHub users, repositories, and topics
+- `POST /api/users` - Add/update user in rankings
+- `POST /api/repositories` - Add/update repository in rankings
+- `POST /api/topics` - Add/update topic in rankings
+
+### Data Management
+
+- Automatic GitHub data fetching and synchronization
+- Duplicate detection and data merging
+- Error handling for API rate limits
+
+## 📈 SEO Features
+
+### Metadata
+
+- Dynamic page titles and descriptions
+- Open Graph tags for social sharing
+- Twitter Card support
+
+### Technical SEO
+
+- Automatic sitemap generation
+- Robots.txt configuration
+- Structured data for search engines
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+1. Connect your GitHub repository to Vercel
+2. Add environment variables in Vercel dashboard
+3. Deploy automatically on every push
+
+### Manual Deployment
+
+```bash
+npm run build
+npm start
+```
+
+## 🤝 Contributing
+
+We welcome contributions from the community! Please see our [Contributing Guide](CONTRIBUTING.md) for detailed information on:
+
+- Development setup and guidelines
+- Code style and standards
+- Testing requirements
+- Pull request process
+- Issue reporting
+
+### Quick Start
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Open a Pull Request
+
+For questions, reach out to us at [contact@muhammadfiaz.com](mailto:contact@muhammadfiaz.com)
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- [GitHub API](https://docs.github.com/en/rest) for comprehensive GitHub data
+- [Shadcn/UI](https://ui.shadcn.com/) for beautiful React components
+- [Xata](https://xata.io/) for serverless PostgreSQL database
+- [Next.js](https://nextjs.org/) for the amazing React framework
+
+## 📧 Support
+
+For support, email [contact@muhammadfiaz.com](mailto:contact@muhammadfiaz.com) or open an issue on GitHub.
+
+---
+
+Built with ❤️ for the GitHub community

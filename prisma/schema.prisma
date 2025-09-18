@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  name      String?
+  avatarUrl String?
+  bio       String?
+  location  String?
+  company   String?
+  blog      String?
+  followers Int      @default(0)
+  following Int      @default(0)
+  publicRepos Int    @default(0)
+  totalStars  Int    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("users")
+}
+
+model Repository {
+  id          String   @id @default(cuid())
+  name        String
+  fullName    String   @unique
+  owner       String
+  description String?
+  language    String?
+  stars       Int      @default(0)
+  forks       Int      @default(0)
+  watchers    Int      @default(0)
+  openIssues  Int      @default(0)
+  size        Int      @default(0)
+  isPrivate   Boolean  @default(false)
+  htmlUrl     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("repositories")
+}
+
+model Topic {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  displayName String?
+  description String?
+  featured    Boolean  @default(false)
+  curated     Boolean  @default(false)
+  score       Float    @default(0)
+  repositories Int     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("topics")
+}

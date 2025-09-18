@@ -1,6 +1,18 @@
-# RankedIn - GitHub Rankings Platform
+<div align="center">
 
-[![Sponsor](https://img.shields.io/badge/Sponsor-pay.muhammadfiaz.com-blue?style=for-the-badge&logo=github)](https://pay.muhammadfiaz.com)
+# RankedIn
+### GitHub Rankings Platform
+
+[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/rankedin/website)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.5.3-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/github/license/rankedin/website)](https://github.com/rankedin/website/blob/main/LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/rankedin/website/pulls)
+[![GitHub stars](https://img.shields.io/github/stars/rankedin/website.svg)](https://github.com/rankedin/website/stargazers)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/45cfaa41-43e8-46ec-a36a-2e51994c2d08/deploy-status)](https://app.netlify.com/projects/rankedin/deploys)
+
+</div>
 
 A comprehensive full-stack SaaS website for discovering and ranking GitHub users, repositories, and topics. Built with modern web technologies and designed for optimal performance and user experience.
 
@@ -291,7 +303,7 @@ For questions, reach out to us at [contact@muhammadfiaz.com](mailto:contact@muha
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the Apache License 2.0 - check the [LICENSE file](LICENSE) for details.
 
 ## 🙏 Acknowledgments
 

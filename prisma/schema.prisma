@@ -92,3 +92,16 @@ model GlobalStats {
 
   @@map("global_stats")
 }
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique(map: "newsletter_subscribers_email_unique")
+  subscribedAt DateTime @default(now())
+  isActive  Boolean  @default(true)
+  unsubscribedAt DateTime?
+
+  @@unique([email], map: "newsletter_subscribers_email_composite_unique")
+  @@index([isActive])
+  @@index([subscribedAt])
+  @@map("newsletter_subscribers")
+}

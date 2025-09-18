@@ -1,33 +1,96 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Gift, Mail, Sparkles } from "lucide-react"
-import { useState } from "react"
+import { Gift, Mail, Sparkles, CheckCircle, AlertCircle, Loader2 } from "lucide-react"
+import { useState, useEffect } from "react"
 import { toast } from "sonner"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export function NewsletterSection() {
   const [email, setEmail] = useState("")
   const [isSubscribing, setIsSubscribing] = useState(false)
+  const [message, setMessage] = useState("")
+  const [messageType, setMessageType] = useState<"success" | "error" | null>(null)
+  const [subscriberCount, setSubscriberCount] = useState(25000)
+
+  // Fetch subscriber count on component mount
+  useEffect(() => {
+    const fetchSubscriberCount = async () => {
+      try {
+        const response = await fetch("/api/stats")
+        if (response.ok) {
+          const stats = await response.json()
+          if (stats.newsletterSubscribers) {
+            setSubscriberCount(stats.newsletterSubscribers.raw)
+          }
+        }
+      } catch (_error) {
+        // Keep default count if API fails
+        console.error("Failed to fetch subscriber count:", _error)
+      }
+    }
+
+    fetchSubscriberCount()
+  }, [])
+
+  // Email validation
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault()
+
     if (!email.trim()) {
-      toast.error("Please enter a valid email address")
+      setMessage("Please enter your email address")
+      setMessageType("error")
+      return
+    }
+
+    if (!isValidEmail(email)) {
+      setMessage("Please enter a valid email address")
+      setMessageType("error")
       return
     }
 
     setIsSubscribing(true)
+    setMessage("")
 
-    // Simulate newsletter subscription
-    setTimeout(() => {
-      toast.success("Successfully subscribed to the newsletter!")
-      setEmail("")
+    try {
+      const response = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email.trim() }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setMessage("Successfully subscribed! Check your email for confirmation.")
+        setMessageType("success")
+        setEmail("")
+        toast.success("Successfully subscribed to the newsletter!")
+        // Update subscriber count (in a real app, this would come from the API)
+        setSubscriberCount(prev => prev + 1)
+      } else {
+        setMessage(data.error || "Something went wrong. Please try again.")
+        setMessageType("error")
+        toast.error(data.error || "Something went wrong. Please try again.")
+      }
+    } catch (error) {
+      setMessage("Network error. Please check your connection and try again.")
+      setMessageType("error")
+      toast.error("Network error. Please check your connection and try again.")
+    } finally {
       setIsSubscribing(false)
-    }, 1000)
+    }
   }
 
   return (
@@ -87,7 +150,10 @@ export function NewsletterSection() {
                     className="group px-8"
                   >
                     {isSubscribing ? (
-                      "Subscribing..."
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Subscribing...
+                      </>
                     ) : (
                       <>
                         Subscribe
@@ -96,11 +162,24 @@ export function NewsletterSection() {
                     )}
                   </Button>
                 </div>
+
+                {message && (
+                  <Alert className={`mt-4 ${messageType === "success" ? "border-green-500" : "border-red-500"}`}>
+                    {messageType === "success" ? (
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <AlertCircle className="h-4 w-4 text-red-500" />
+                    )}
+                    <AlertDescription className={messageType === "success" ? "text-green-700" : "text-red-700"}>
+                      {message}
+                    </AlertDescription>
+                  </Alert>
+                )}
               </form>
 
               <div className="mt-6 text-sm text-muted-foreground">
                 <p>
-                  Join 25,000+ developers • Unsubscribe anytime • No spam, ever
+                  Join {subscriberCount.toLocaleString()}+ developers • Unsubscribe anytime • No spam, ever
                 </p>
               </div>
 

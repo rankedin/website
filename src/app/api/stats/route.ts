@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma"
 export async function GET() {
   try {
     // Get all the statistics in parallel for better performance
-    const [userCount, repoCount, totalStars, topicCount, globalStats] =
+    const [userCount, repoCount, totalStars, topicCount, globalStats, newsletterSubscriberCount] =
       await Promise.all([
         // Count total users
         prisma.user.count(),
@@ -26,6 +26,12 @@ export async function GET() {
         prisma.globalStats.findUnique({
           where: { id: "global" },
         }),
+
+        // Count active newsletter subscribers
+        // prisma.newsletterSubscriber.count({
+        //   where: { isActive: true },
+        // }),
+        Promise.resolve(25000), // Mock count until database is set up
       ])
 
     // Format the numbers nicely
@@ -69,6 +75,11 @@ export async function GET() {
           : "0",
         raw: globalStats?.totalBadgeRequests || 0,
         description: "Total badge requests served",
+      },
+      newsletterSubscribers: {
+        value: newsletterSubscriberCount > 0 ? formatNumber(newsletterSubscriberCount) : "0",
+        raw: newsletterSubscriberCount,
+        description: "Active newsletter subscribers",
       },
     }
 

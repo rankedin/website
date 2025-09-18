@@ -22,6 +22,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useStatsStore } from "@/store/stats"
 import { useTrendingStore } from "@/store/trending"
+import { formatNumber } from "@/lib/utils"
 
 export function BentoGridSection() {
   const { stats, fetchStats } = useStatsStore()
@@ -57,7 +58,7 @@ export function BentoGridSection() {
                   {trendingUsers[0]?.name || trendingUsers[0]?.username || ""}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {trendingUsers[0]?.followers || 0}K followers
+                  {formatNumber(trendingUsers[0]?.followers || 0)} followers
                 </p>
               </div>
             </div>
@@ -81,7 +82,7 @@ export function BentoGridSection() {
       title: "Stars Growth",
       description: stats ? `${stats.totalStars.value} stars tracked` : "",
       icon: <Star className="h-5 w-5" />,
-      stats: stats ? `+${Math.floor(stats.totalStars.raw / 1000)}K today` : "",
+      stats: stats ? `+${formatNumber(Math.floor(stats.totalStars.raw / 1000))} today` : "",
       gradient: "from-yellow-500/20 to-orange-500/20",
       size: "sm",
       content: stats ? (
@@ -142,7 +143,7 @@ export function BentoGridSection() {
             <div className="flex items-center justify-between text-xs">
               <span>{trendingRepos[0]?.fullName || ""}</span>
               <span className="text-green-500">
-                +{Math.floor((trendingRepos[0]?.stars || 0) / 1000)}K
+                +{formatNumber(Math.floor((trendingRepos[0]?.stars || 0) / 1000))}
               </span>
             </div>
           </div>

@@ -1,64 +1,64 @@
-import type { NextRequest } from "next/server"
-import { NextResponse } from "next/server"
-import { prisma } from "@/lib/prisma"
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
 
 interface UserBadgeStats {
-  username: string
-  name: string | null
-  rank: number
-  totalUsers: number
-  percentile: number
-  totalStars: number
-  followers: number
-  publicRepos: number
-  location: string | null
-  company: string | null
-  lastUpdated: Date
+  username: string;
+  name: string | null;
+  rank: number;
+  totalUsers: number;
+  percentile: number;
+  totalStars: number;
+  followers: number;
+  publicRepos: number;
+  location: string | null;
+  company: string | null;
+  lastUpdated: Date;
 }
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
-    const username = searchParams.get("username") || searchParams.get("name")
-    const format = searchParams.get("format") || "json"
-    const style = searchParams.get("style") || "default"
+    const { searchParams } = new URL(request.url);
+    const username = searchParams.get('username') || searchParams.get('name');
+    const format = searchParams.get('format') || 'json';
+    const style = searchParams.get('style') || 'default';
 
     if (!username) {
       return NextResponse.json(
         {
           error:
-            "Username parameter is required. Use ?username=yourusername or ?name=yourusername",
+            'Username parameter is required. Use ?username=yourusername or ?name=yourusername',
         },
-        { status: 400 },
-      )
+        { status: 400 }
+      );
     }
 
     // Find user in database
     const user = await prisma.user.findUnique({
       where: { username: username.toLowerCase() },
-    })
+    });
 
     if (!user) {
       return NextResponse.json(
         {
           error: `User '${username}' not found in our rankings. Please visit our website to add this user.`,
         },
-        { status: 404 },
-      )
+        { status: 404 }
+      );
     }
 
     // Track global badge request
     await prisma.globalStats.upsert({
-      where: { id: "global" }, // Use a fixed ID for the single global stats record
+      where: { id: 'global' }, // Use a fixed ID for the single global stats record
       update: { totalBadgeRequests: { increment: 1 } },
       create: {
-        id: "global",
+        id: 'global',
         totalBadgeRequests: 1,
         totalUsers: await prisma.user.count(),
         totalRepos: await prisma.repository.count(),
         totalTopics: await prisma.topic.count(),
       },
-    })
+    });
 
     // Calculate user's ranking
     const ranking = await prisma.user.count({
@@ -67,17 +67,17 @@ export async function GET(request: NextRequest) {
           gt: user.totalStars,
         },
       },
-    })
+    });
 
-    const userRank = ranking + 1
+    const userRank = ranking + 1;
 
     // Get total number of users for percentage calculation
-    const totalUsers = await prisma.user.count()
+    const totalUsers = await prisma.user.count();
 
     // Calculate percentile (higher is better)
     const percentile = Math.round(
-      ((totalUsers - userRank + 1) / totalUsers) * 100,
-    )
+      ((totalUsers - userRank + 1) / totalUsers) * 100
+    );
 
     const userStats = {
       username: user.username,
@@ -91,50 +91,50 @@ export async function GET(request: NextRequest) {
       location: user.location,
       company: user.company,
       lastUpdated: user.updatedAt,
-    }
+    };
 
     // Return different formats based on request
     if (
-      format === "svg" ||
-      request.headers.get("accept")?.includes("image/svg+xml")
+      format === 'svg' ||
+      request.headers.get('accept')?.includes('image/svg+xml')
     ) {
-      return generateBadgeSVG(userStats, style)
+      return generateBadgeSVG(userStats, style);
     }
 
     // Default JSON response
-    return NextResponse.json(userStats)
+    return NextResponse.json(userStats);
   } catch (error) {
-    console.error("Badges API error:", error)
+    console.error('Badges API error:', error);
     return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    )
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }
 
 function generateBadgeSVG(
   stats: UserBadgeStats,
-  style: string = "default",
+  style: string = 'default'
 ): NextResponse {
-  const rank = stats.rank.toLocaleString()
-  const stars = stats.totalStars.toLocaleString()
-  const percentile = stats.percentile
+  const rank = stats.rank.toLocaleString();
+  const stars = stats.totalStars.toLocaleString();
+  const percentile = stats.percentile;
 
   // Escape special characters for SVG
-  const username = stats.username.replace(/[<>&'"]/g, (c) => {
+  const username = stats.username.replace(/[<>&'"]/g, c => {
     const escapeChars: { [key: string]: string } = {
-      "<": "&lt;",
-      ">": "&gt;",
-      "&": "&amp;",
-      "'": "&#39;",
-      '"': "&quot;",
-    }
-    return escapeChars[c] || c
-  })
+      '<': '&lt;',
+      '>': '&gt;',
+      '&': '&amp;',
+      "'": '&#39;',
+      '"': '&quot;',
+    };
+    return escapeChars[c] || c;
+  });
 
-  let svg: string
+  let svg: string;
 
-  if (style === "flat") {
+  if (style === 'flat') {
     // Flat style badge
     svg = `<svg width="320" height="28" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -149,8 +149,8 @@ function generateBadgeSVG(
   <text x="70" y="17" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">${username}</text>
   <text x="180" y="17" font-family="Arial, sans-serif" font-size="10" fill="#ccc">⭐ ${stars} stars</text>
   <text x="280" y="17" font-family="Arial, sans-serif" font-size="10" fill="#4c1" text-anchor="end">Top ${percentile}%</text>
-</svg>`
-  } else if (style === "plastic") {
+</svg>`;
+  } else if (style === 'plastic') {
     // Plastic style badge
     svg = `<svg width="320" height="28" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -171,7 +171,7 @@ function generateBadgeSVG(
   <text x="70" y="17" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#000">${username}</text>
   <text x="180" y="17" font-family="Arial, sans-serif" font-size="10" fill="#000">⭐ ${stars} stars</text>
   <text x="280" y="17" font-family="Arial, sans-serif" font-size="10" fill="#4c1" text-anchor="end">Top ${percentile}%</text>
-</svg>`
+</svg>`;
   } else {
     // Default style (modern dark theme)
     svg = `<svg width="320" height="28" xmlns="http://www.w3.org/2000/svg">
@@ -187,14 +187,14 @@ function generateBadgeSVG(
   <text x="70" y="17" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#f1f5f9">${username}</text>
   <text x="180" y="17" font-family="Arial, sans-serif" font-size="10" fill="#64748b">⭐ ${stars} stars</text>
   <text x="280" y="17" font-family="Arial, sans-serif" font-size="10" fill="#3b82f6" text-anchor="end">Top ${percentile}%</text>
-</svg>`
+</svg>`;
   }
 
   return new NextResponse(svg, {
     headers: {
-      "Content-Type": "image/svg+xml",
-      "Cache-Control": "public, max-age=300", // Cache for 5 minutes
-      "Access-Control-Allow-Origin": "*", // Allow cross-origin requests
+      'Content-Type': 'image/svg+xml',
+      'Cache-Control': 'public, max-age=300', // Cache for 5 minutes
+      'Access-Control-Allow-Origin': '*', // Allow cross-origin requests
     },
-  })
+  });
 }

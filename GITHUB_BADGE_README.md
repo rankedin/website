@@ -7,6 +7,7 @@ This README demonstrates how to use the GitHub Ranking Badges API in your projec
 We offer multiple badge styles to match your README theme:
 
 ### Default Style (Modern Dark)
+
 ![Default Badge](http://localhost:3000/api/badges?username=muhammad-fiaz&style=default)
 
 ```markdown
@@ -14,6 +15,7 @@ We offer multiple badge styles to match your README theme:
 ```
 
 ### Flat Style
+
 ![Flat Badge](http://localhost:3000/api/badges?username=muhammad-fiaz&style=flat)
 
 ```markdown
@@ -21,6 +23,7 @@ We offer multiple badge styles to match your README theme:
 ```
 
 ### Plastic Style
+
 ![Plastic Badge](http://localhost:3000/api/badges?username=muhammad-fiaz&style=plastic)
 
 ```markdown
@@ -50,16 +53,19 @@ Replace `yourusername` with your actual GitHub username:
 ## API Options
 
 ### SVG Badge (Default)
+
 ```markdown
 ![GitHub Ranking](https://yourdomain.com/api/badges?username=yourusername)
 ```
 
 ### JSON API
+
 ```markdown
 https://yourdomain.com/api/badges?username=yourusername&format=json
 ```
 
 ### Alternative Parameter
+
 ```markdown
 ![GitHub Ranking](https://yourdomain.com/api/badges?name=yourusername)
 ```
@@ -67,6 +73,7 @@ https://yourdomain.com/api/badges?username=yourusername&format=json
 ## Badge Information
 
 The badge displays:
+
 - **Rank**: Your current position (e.g., #1)
 - **Username**: Your GitHub username
 - **Stars**: Total stars across all repositories
@@ -75,6 +82,7 @@ The badge displays:
 ## Example Badge Data
 
 For user `muhammad-fiaz`:
+
 - **Rank**: #1
 - **Total Stars**: 451 ⭐
 - **Percentile**: Top 100%
@@ -84,32 +92,41 @@ For user `muhammad-fiaz`:
 ## Integration Examples
 
 ### In Markdown
+
 ```markdown
 ## My GitHub Stats
+
 ![GitHub Ranking](https://yourdomain.com/api/badges?username=yourusername)
 
 ### Current Ranking
+
 - **Rank**: #1
 - **Total Stars**: 451 ⭐
 - **Percentile**: Top 100%
 ```
 
 ### In HTML
+
 ```html
-<img src="https://yourdomain.com/api/badges?username=yourusername"
-     alt="GitHub Ranking Badge"
-     height="28">
+<img
+  src="https://yourdomain.com/api/badges?username=yourusername"
+  alt="GitHub Ranking Badge"
+  height="28"
+/>
 ```
 
 ## Troubleshooting
 
 ### Badge Not Showing?
+
 1. Make sure the username exists in our database
 2. Check that the domain is accessible
 3. Verify the URL format is correct
 
 ### User Not Found?
+
 If you get a "User not found" error:
+
 1. Visit our website
 2. Search for your username
 3. The user will be automatically added to rankings

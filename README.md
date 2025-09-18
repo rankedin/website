@@ -231,6 +231,7 @@ Show off your GitHub ranking with beautiful, dynamic badges in your README files
 ### Badge Information
 
 Each badge displays:
+
 - **Rank**: Your current position (e.g., #42)
 - **Username**: Your GitHub username
 - **Stars**: Total stars across all repositories

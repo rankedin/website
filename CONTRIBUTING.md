@@ -77,6 +77,7 @@ NEXT_PUBLIC_BASE_URL="http://localhost:3000"
 ### Database Setup
 
 1. **Push the database schema**:
+
    ```bash
    npx prisma db push
    ```
@@ -209,17 +210,20 @@ __tests__/
 ### Pull Request Process
 
 1. **Create a feature branch**:
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
 2. **Make your changes** and commit:
+
    ```bash
    git add .
    git commit -m "feat: add new feature"
    ```
 
 3. **Push to your fork**:
+
    ```bash
    git push origin feature/your-feature-name
    ```
